@@ -1,5 +1,4 @@
-alignment==1.0.10
-levenshtein==0.12.0
-numpy==1.19.4
-pyperclip==1.8.1
-six==1.15.0
+# Runtime requirement.
+# For development install (tests + optional clipboard support) use:
+#     pip install -e .[clipboard,dev]
+numpy>=1.19

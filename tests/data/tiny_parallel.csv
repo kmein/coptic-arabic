@@ -1,0 +1,8 @@
+side_a,side_b,skip
+AB,xy,
+ABA,xyx,
+BAB,yxy,
+ABAB,xyxy,
+BABA,yxyx,
+AAB,xxy,
+QQ,zz,bad

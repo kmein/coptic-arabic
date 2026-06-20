@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "coptic-arabic"
+version = "0.1.0"
+description = "Coptic-Arabic letter alignment — example client of the scriptalign library."
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [
+    { name = "Christian Casey" },
+]
+dependencies = [
+    "scriptalign>=0.1.0",
+]
+
+[project.optional-dependencies]
+clipboard = ["pyperclip>=1.8"]
+
+[project.scripts]
+coptic-arabic = "coptic_arabic.run:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["coptic_arabic*"]
+
+[tool.setuptools.package-dir]
+"" = "src"
