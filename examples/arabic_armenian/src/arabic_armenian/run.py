@@ -8,6 +8,8 @@ from pathlib import Path
 from scriptalign import (
     AlignmentResult,
     iterate_alignment,
+    save_correspondences_tsv,
+    save_labeled_matrix_csv,
     save_matrix_csv,
     save_state,
 )
@@ -17,6 +19,7 @@ from .corpus_config import default_data_path, load_corpus
 
 def _write_outputs(result: AlignmentResult, output_dir: Path, iteration: int) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
+    a, b = result.corpus.alphabet_a, result.corpus.alphabet_b
     save_matrix_csv(
         output_dir / f"Co-occurrences (after alignment #{iteration}).csv",
         result.counts.occurrences,
@@ -24,6 +27,10 @@ def _write_outputs(result: AlignmentResult, output_dir: Path, iteration: int) ->
     save_matrix_csv(
         output_dir / f"phi (after alignment #{iteration}).csv",
         result.phi,
+    )
+    save_labeled_matrix_csv(output_dir / "correspondences.csv", result.phi, a, b)
+    save_correspondences_tsv(
+        output_dir / "correspondences_ranked.tsv", result.phi, a, b
     )
     save_state(output_dir / "aligned_texts.pkl", result.corpus, result.alignments)
 

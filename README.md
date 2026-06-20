@@ -47,9 +47,11 @@ coptic-arabic --input parallel_texts.csv --output-dir output/ --iterations 10
 
 Outputs:
 
-- `output/phi (after alignment #<i>).csv` — final φ matrix
-- `output/Co-occurrences (after alignment #<i>).csv` — aligned co-occurrence counts
-- `output/aligned_texts.pkl` — pickled `{words_a, words_b, alignments}`
+- `output/correspondences.csv` — **φ matrix with letter labels** (column headers = Arabic alphabet, row labels = Coptic alphabet). Open in a spreadsheet to inspect any pair.
+- `output/correspondences_ranked.tsv` — one letter pair per line, sorted strongest-correlated first. Three tab-separated columns: `a`, `b`, `phi`.
+- `output/phi (after alignment #<i>).csv` — final φ matrix, unlabeled (raw numbers).
+- `output/Co-occurrences (after alignment #<i>).csv` — aligned co-occurrence counts.
+- `output/aligned_texts.pkl` — pickled `{words_a, words_b, alignments}`.
 
 Pass `--clipboard` to also copy a formatted φ table to the system clipboard (requires `pip install -e .[clipboard]`).
 

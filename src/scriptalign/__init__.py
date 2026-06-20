@@ -4,7 +4,14 @@ from .align import align_pair
 from .corpus import ParallelCorpus, build_corpus, load_parallel_corpus
 from .em import AlignmentResult, iterate_alignment
 from .formatting import format_phi_table, format_word_alignment
-from .io_ import load_legacy_state, load_state, save_matrix_csv, save_state
+from .io_ import (
+    load_legacy_state,
+    load_state,
+    save_correspondences_tsv,
+    save_labeled_matrix_csv,
+    save_matrix_csv,
+    save_state,
+)
 from .orthography import Orthography
 from .scoring import (
     Counts,
@@ -29,6 +36,8 @@ __all__ = [
     "load_parallel_corpus",
     "load_state",
     "phi_from_counts",
+    "save_correspondences_tsv",
+    "save_labeled_matrix_csv",
     "save_matrix_csv",
     "save_state",
 ]

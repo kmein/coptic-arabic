@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+import csv
 import pickle
 from pathlib import Path
-from typing import Any
+from typing import Any, Sequence
 
 import numpy as np
 
@@ -13,6 +14,44 @@ from .corpus import ParallelCorpus
 
 def save_matrix_csv(path: str | Path, matrix: np.ndarray) -> None:
     np.savetxt(path, matrix, delimiter=",")
+
+
+def save_labeled_matrix_csv(
+    path: str | Path,
+    matrix: np.ndarray,
+    row_labels: Sequence[str],
+    col_labels: Sequence[str],
+) -> None:
+    """Write ``matrix`` as a CSV with letter headers across the top and letter
+    labels down the first column. Suited to opening in a spreadsheet."""
+    with open(path, "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow([""] + list(col_labels))
+        for label, row in zip(row_labels, matrix):
+            writer.writerow([label] + [f"{v:.12f}" for v in row])
+
+
+def save_correspondences_tsv(
+    path: str | Path,
+    matrix: np.ndarray,
+    row_labels: Sequence[str],
+    col_labels: Sequence[str],
+) -> None:
+    """Write every letter pair on its own line, sorted strongest-correlated
+    first. Three tab-separated columns: ``a``, ``b``, ``phi``."""
+    pairs = sorted(
+        (
+            (float(matrix[i, j]), row_labels[i], col_labels[j])
+            for i in range(matrix.shape[0])
+            for j in range(matrix.shape[1])
+        ),
+        key=lambda t: t[0],
+        reverse=True,
+    )
+    with open(path, "w") as f:
+        f.write("a\tb\tphi\n")
+        for value, a, b in pairs:
+            f.write(f"{a}\t{b}\t{value:+.6f}\n")
 
 
 def save_state(
