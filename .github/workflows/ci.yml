@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  pytest:
+    name: pytest / py${{ matrix.python }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.9", "3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install all distributions
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e . \
+                      -e examples/coptic_arabic \
+                      -e examples/arabic_armenian \
+                      pytest
+      - name: Run tests
+        run: pytest -q
+      - name: Run example CLIs end-to-end
+        run: |
+          coptic-arabic --input parallel_texts.csv --output-dir /tmp/ca --iterations 2 --top 5
+          arabic-armenian --output-dir /tmp/aa --iterations 2 --top 5
+
+  nix:
+    name: nix flake check + build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - name: nix flake check
+        run: nix flake check --print-build-logs
+      - name: Build all packages
+        run: nix build --print-build-logs .#scriptalign .#coptic-arabic .#arabic-armenian
+      - name: Run coptic-arabic CLI through Nix
+        run: nix run .#coptic-arabic -- --input parallel_texts.csv --output-dir /tmp/ca --iterations 2 --top 5
+      - name: Run arabic-armenian CLI through Nix
+        run: nix run .#arabic-armenian -- --output-dir /tmp/aa --iterations 2 --top 5
