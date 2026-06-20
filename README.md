@@ -1,9 +1,10 @@
 # Coptic-Arabic Alignment
 
-This repository ships two things:
+This repository ships three things:
 
 1. **`scriptalign`** — a domain-neutral Python library for discovering letter-level correspondences between two parallel orthographies via iterative φ-coefficient scoring and Needleman-Wunsch-style alignment.
 2. **`coptic-arabic`** — the original Casey alignment of Coptic-Arabic parallel text, now expressed as a client of `scriptalign`.
+3. **`arabic-armenian`** — a 27-pair alignment of Arabic philosophical terms against their Armenian-script transcriptions, also a client of `scriptalign`. Data source: <https://kieranmeinhardt.de/language/arabic-armenian/>.
 
 The main purpose of sharing it here is to demonstrate that the computational alignment operates without interference and produces the results shown in my papers. The alignment and the evidence lead; analysis comes after. All results should be confirmed by repeating the analysis.
 
@@ -132,7 +133,7 @@ result = iterate_alignment(corpus, n_iters=10)
 # result.alignments: per-word list of (i, j) index pairs
 ```
 
-The library is deliberately agnostic about which scripts you're aligning, what your CSV columns are called, and how you normalize each side. The Coptic-Arabic specifics live entirely in `examples/coptic_arabic/`.
+The library is deliberately agnostic about which scripts you're aligning, what your CSV columns are called, and how you normalize each side. All corpus-specific knowledge lives under `examples/` — see `examples/coptic_arabic/` or `examples/arabic_armenian/` for two worked-out clients.
 
 ## Data sources
 
